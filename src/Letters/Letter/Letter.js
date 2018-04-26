@@ -39,7 +39,12 @@ class Letter extends Component {
     this.props.wrongCallbackFromLetters();
   };
 
+  voidResponse = () => {
+    this.props.voidCallback();
+  };
+
   handleKeyPress(event) {
+    console.log('KEYPRESS ON SPACE WITH LETTER ' + this.state.letter);
     const keyName = event.key;
     if (letters.includes(keyName) && !this.state.correct) {
       this.setState({
@@ -51,6 +56,9 @@ class Letter extends Component {
       } else {
         this.updateParentWrong();
       }
+    } else if (letters.includes(keyName) && this.state.correct) {
+      // send void responseHeard
+      this.voidResponse();
     }
   }
 

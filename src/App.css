@@ -53,3 +53,8 @@
 button {
   margin: 10px;
 }
+
+.definition {
+  font-family: 'Courier New', Courier, monospace;
+  color: #222;
+}

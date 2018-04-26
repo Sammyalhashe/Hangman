@@ -16,26 +16,17 @@ class Letters extends Component {
     this.lettersGuessedWrong = 0;
     this.numberLettersWrong = 0;
     this.responsesHeard = 0;
+    this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this);
   }
 
-  updateGuessedLetters = () => {
-    this.lettersGuessedRight++;
+  voidCallback = () => {
     this.responsesHeard++;
-    if (this.lettersGuessedRight === this.state.length) {
-      this.lettersGuessedRight = 0;
-      this.lettersGuessedWrong = 0;
-      this.responsesHeard = 0;
-      alert('FIN');
-    }
-  };
-
-  updateWrongGuessedLetters = () => {
     this.numberLettersWrong++;
-    this.responsesHeard++;
     if (this.numberLettersWrong === this.state.length) {
       this.numberLettersWrong = 0;
       this.responsesHeard = 0;
       this.lettersGuessedWrong++;
+      console.log('Letters guessed wrong ' + this.lettersGuessedWrong);
 
       if (this.lettersGuessedWrong === this.state.attempts) {
         alert('ATTEMPTS USED UP');
@@ -44,22 +35,102 @@ class Letters extends Component {
         this.responsesHeard = 0;
       }
     }
-
     if (this.responsesHeard === this.state.length) {
+      console.log('(VOID) RESPONSES BACK DOWN TO ZERO ');
       this.numberLettersWrong = 0;
       this.responsesHeard = 0;
     }
   };
 
-  static getDerivedStateFromProps(nextProps, prevState) {
+  updateGuessedLetters = () => {
+    this.lettersGuessedRight++;
+    this.responsesHeard++;
+    console.log('Responses heard ' + this.responsesHeard);
+    if (this.lettersGuessedRight === this.state.length) {
+      this.lettersGuessedRight = 0;
+      this.lettersGuessedWrong = 0;
+      this.responsesHeard = 0;
+      alert('FIN');
+      this.props.callBackWhenSuccess();
+    }
+    if (this.responsesHeard === this.state.length) {
+      console.log('(RIGHT) RESPONSES BACK DOWN TO ZERO ');
+      this.numberLettersWrong = 0;
+      this.responsesHeard = 0;
+    }
+  };
+
+  updateWrongGuessedLetters = () => {
+    this.numberLettersWrong++;
+    this.responsesHeard++;
+    console.log('Responses heard ' + this.responsesHeard);
+    console.log('Number of places its wrong ' + this.numberLettersWrong);
+    if (this.numberLettersWrong === this.state.length) {
+      this.numberLettersWrong = 0;
+      this.responsesHeard = 0;
+      this.lettersGuessedWrong++;
+      console.log('Letters guessed wrong ' + this.lettersGuessedWrong);
+
+      if (this.lettersGuessedWrong === this.state.attempts) {
+        this.lettersGuessedRight = 0;
+        this.lettersGuessedWrong = 0;
+        this.responsesHeard = 0;
+        this.props.callBackWhenFail();
+      }
+    }
+    if (this.responsesHeard === this.state.length) {
+      console.log('(Wrong) RESPONSES BACK DOWN TO ZERO ');
+      this.numberLettersWrong = 0;
+      this.responsesHeard = 0;
+    }
+  };
+
+  refreshGuesses = () => {
+    this.lettersGuessedRight = 0;
+    this.lettersGuessedWrong = 0;
+    this.responsesHeard = 0;
+  };
+
+  // static getDerivedStateFromProps(nextProps, prevState) {
+  //   console.log('componentWillMount-Letters');
+  //   console.log(nextProps);
+  //   if (nextProps.giveUp === false) {
+  //     refresh();
+  //     return {
+  //       letters: nextProps.letters,
+  //       active: nextProps.active,
+  //       gaveUp: nextProps.giveUp,
+  //       length: nextProps.letters.length
+  //     };
+  //   } else {
+  //     return {
+  //       letters: nextProps.letters,
+  //       active: nextProps.active,
+  //       gaveUp: nextProps.giveUp,
+  //       length: nextProps.letters.length
+  //     };
+  //   }
+  // }
+
+  componentWillReceiveProps(nextProps) {
     console.log('componentWillMount-Letters');
     console.log(nextProps);
-    return {
-      letters: nextProps.letters,
-      active: nextProps.active,
-      gaveUp: nextProps.giveUp,
-      length: nextProps.letters.length
-    };
+    if (nextProps.giveUp === false) {
+      this.refreshGuesses();
+      this.setState({
+        letters: nextProps.letters,
+        active: nextProps.active,
+        gaveUp: nextProps.giveUp,
+        length: nextProps.letters.length
+      });
+    } else {
+      this.setState({
+        letters: nextProps.letters,
+        active: nextProps.active,
+        gaveUp: nextProps.giveUp,
+        length: nextProps.letters.length
+      });
+    }
   }
 
   render() {
@@ -74,6 +145,7 @@ class Letters extends Component {
               giveUp={this.state.gaveUp}
               callbackFromLetters={this.updateGuessedLetters}
               wrongCallbackFromLetters={this.updateWrongGuessedLetters}
+              voidCallback={this.voidCallback}
             />
           );
         })}
