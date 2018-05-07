@@ -1,41 +1,41 @@
 @font-face {
-  font-family: Tibeba;
-  src: url(./static/fonts/TIBEBA__.TTF);
+    font-family: Tibeba;
+    src: url(./static/fonts/TIBEBA__.TTF);
 }
 
 .App {
-  text-align: center;
+    text-align: center;
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+    animation: App-logo-spin infinite 20s linear;
+    height: 80px;
 }
 
 .App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
+    background-color: #222;
+    height: 150px;
+    padding: 20px;
+    color: white;
 }
 
 .App-title {
-  font-size: 5em;
-  font-family: Tibeba;
+    font-size: 5em;
+    font-family: Tibeba;
 }
 
 .App-intro {
-  font-size: large;
+    font-size: large;
 }
 
 .Letter_holder {
-  display: inline-block;
-  width: 4.5vw;
-  border-bottom: 2px solid black;
-  font-size: 10vw;
-  color: #222;
-  margin: 10px;
-  font-family: Tibeba;
+    display: inline-block;
+    width: 4.5vw;
+    border-bottom: 2px solid black;
+    font-size: 10vw;
+    color: #222;
+    margin: 10px;
+    font-family: Tibeba;
 }
 
 /* .Letter {
@@ -47,14 +47,39 @@
 } */
 
 .wordHolder {
-  visibility: block;
+    visibility: block;
 }
 
 button {
-  margin: 10px;
+    margin: 10px;
+}
+
+#attemptsHolder {
+    font-family: Tibeba;
+    font-size: 10vw;
 }
 
 .definition {
-  font-family: 'Courier New', Courier, monospace;
-  color: #222;
+    font-family: 'Courier New', Courier, monospace;
+    color: #222;
+}
+
+
+@media screen and (min-width: 0px) and (max-width: 900px) {
+    .keyboardHolder {
+        display: block;
+    }
+}
+
+
+@media screen and (min-width: 901px) {
+    .keyboardHolder {
+        display: none;
+    }
+}
+
+#stickCanvas {
+    color: black;
+    border: black dashed 2px;
+    padding: 15px;
 }
