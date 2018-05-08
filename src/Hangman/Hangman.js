@@ -5,6 +5,7 @@ import {
     Button
 } from 'reactstrap';
 import Letters from '../Letters/Letters';
+import $ from 'jquery'
 
 const letters = 'abcdefghijklmnopqrstuvwxyz';
 
@@ -19,7 +20,8 @@ class Hangman extends Component {
             wordType: '',
             letters: [],
             active: props.active,
-            keepTrying: true
+            keepTrying: true,
+            numberLettersWrong: 0
         };
         this.showWordDisabled = false;
         // this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this);
@@ -72,6 +74,9 @@ class Hangman extends Component {
     // };
 
     componentDidMount = () => {
+
+        this.showWordDisabled = false;
+        $(".Success").css('display', 'none');
         fetch(
                 'http://api.wordnik.com:80/v4/words.json/randomWord?hasDictionaryDef=true&minCorpusCount=0&minLength=5&maxLength=15&limit=1&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5'
             )
@@ -85,6 +90,14 @@ class Hangman extends Component {
 
     updateWord = () => {
         this.showWordDisabled = false;
+        $(".Success").css('display', 'none');
+        $(".FIN").css('display', 'none');
+        $("#stickCanvas").css('display', 'block');
+        this.setState({
+            numberLettersWrong: 0
+        });
+
+
         fetch(
                 'http://api.wordnik.com:80/v4/words.json/randomWord?hasDictionaryDef=true&minCorpusCount=0&minLength=5&maxLength=15&limit=1&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5'
             )
@@ -101,7 +114,6 @@ class Hangman extends Component {
         let lowercase_letters = word.split('').map(word => word.toLowerCase());
         lowercase_letters.forEach(char => {
             if (!letters.includes(char)) {
-                // alert(char);
                 this.updateWord();
                 return;
             }
@@ -135,6 +147,7 @@ class Hangman extends Component {
         // });
         let canvas = document.getElementById("stickCanvas");
         canvas.width = canvas.width;
+
     };
 
     giveUp() {
@@ -147,12 +160,18 @@ class Hangman extends Component {
     }
 
     callBackWhenSuccess = () => {
-        this.giveUp(); // I call give up here because it resets the state, re-renders this component, and thus uses the new 'showWordDisabled' var for the disabled attribute for the 'Show Word' Button
+        /* this.giveUp(); // I call give up here because it resets the state, re-renders this component, and thus uses the new 'showWordDisabled' var for the disabled attribute for the 'Show Word' Button */
         // this.updateWord();
+        $(".Success").css('display', 'block');
+        $("#stickCanvas").css('display', 'none');
+
     };
 
     callBackWhenFail = () => {
-        alert('YOU HAVE FAILED');
+        /* alert('YOU HAVE FAILED'); */
+
+        $(".FIN").css('display', 'block');
+        $("#stickCanvas").css('display', 'none');
         this.giveUp();
     };
 
@@ -170,6 +189,7 @@ class Hangman extends Component {
             attempts={11}
             callBackWhenSuccess={this.callBackWhenSuccess}
             callBackWhenFail={this.callBackWhenFail}
+            numberLettersWrong={this.state.numberLettersWrong}
           />
         </form>
         <Button

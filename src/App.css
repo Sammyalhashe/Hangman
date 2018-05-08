@@ -80,6 +80,20 @@ button {
 
 #stickCanvas {
     color: black;
-    border: black dashed 2px;
     padding: 15px;
+    display: block;
+}
+
+.FIN {
+    display: none;
+    font-family: Tibeba;
+    color: red;
+    font-size: 14em;
+}
+
+.Success {
+    display: none;
+    font-family: Tibeba;
+    color: green;
+    font-size: 14em;
 }

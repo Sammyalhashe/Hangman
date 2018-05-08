@@ -92,11 +92,11 @@ class Letters extends Component {
             gaveUp: this.props.giveUp,
             length: this.props.letters.length,
             attempts: this.props.attempts,
-            state_lettersGuessedWrong: 0
+            state_lettersGuessedWrong: 0,
         };
         this.lettersGuessedRight = 0;
         this.lettersGuessedWrong = 0;
-        this.numberLettersWrong = 0;
+        this.numberLettersWrong = this.props.numberLettersWrong;
         this.responsesHeard = 0;
         this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this);
     }
@@ -139,8 +139,7 @@ class Letters extends Component {
             $('#attemptsHolder').html(this.state.attempts - this.lettersGuessedWrong);
             this.drawStick(this.state.attempts - this.lettersGuessedWrong);
             this.responsesHeard = 0;
-            $('#Letters_Holders').css('color', 'green');
-            alert('FIN');
+            /* $('#Letters_Holders').css('color', 'green'); */
             this.props.callBackWhenSuccess();
         }
         if (this.responsesHeard === this.state.length) {
@@ -294,6 +293,9 @@ class Letters extends Component {
 <canvas id="stickCanvas">Browser does not support this game</canvas>
             {/*<span style={attempsStyle}><AttempsComponent attempts={this.state.attempts -  this.lettersGuessedWrong} /></span>*/}
 
+            <div className="FIN">FIN</div>
+
+            <div className="Success">Success</div>
             <div className="wordHolder">
                 {this.state.letters.map(char => {
                   return (
